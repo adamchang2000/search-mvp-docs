@@ -1,0 +1,75 @@
+---
+title: "Recording disagreements"
+description: "When sources disagree about a fact, tell us which one you went with, and why."
+---
+
+Agents constantly resolve conflicts between sources: a restaurant's own menu says $95, a guide from last
+winter says $85, and the agent goes with the menu. That judgment is the most useful thing we can learn
+from: it tells the search engine which sources to trust, and when. A disagreement record captures it.
+
+## When to record one
+
+Record a disagreement whenever two or more sources say different things about a **fact that has one right
+answer**, such as a price, opening hours, a date, a figure, a plan's limits, or whether a place is still open,
+and you go with one of them. Record it:
+
+- even when the difference is small;
+- even when the agent settled it without mentioning it to the user;
+- even when it isn't sure which source is right. We want the judgment call, not a verdict that a source is
+  wrong.
+
+Don't record differences of opinion or experience (whether a room is noisy, whether the food is good), or
+figures that depend on who measured them and how (benchmarks, test results, ratings).
+
+Record it as soon as the call is made, before replying. One record per disagreement.
+
+## The record
+
+| Field | |
+|---|---|
+| `fact` | What the sources disagree about, e.g. `"Trestle's prix fixe price"`. |
+| `went_with` | The source you went with: `search_query_id`, `url`, what it `says`, and `why` you chose it. |
+| `supported_by` | Other sources that agree with it, each with `search_query_id`, `url` and `says`. Optional. |
+| `set_aside` | Every source you didn't go with (at least one): `search_query_id`, `url`, `says`, a `reason`, and `why`. |
+| `prompted_by_user` | `true` if the user prompted it (e.g. questioned a fact); `false` if you noticed it yourself. |
+
+`reason` is why a set-aside source differs, as best you can tell:
+
+| reason | |
+|---|---|
+| `stale` | It was probably right when written, but something has changed since. |
+| `biased` | It has a reason to shade it (an ad, a promotion, a competitor). |
+| `incorrect` | It got it wrong. |
+| `unclear` | You can't tell. |
+
+The full schema is in the [API reference](/api-reference/feedback).
+
+## Citing sources
+
+Each source is identified by where you found it:
+
+- **A search result:** the `search_query_id` of the search that returned it, and its URL as shown with the
+  result.
+- **A page you fetched** that wasn't a search result: `search_query_id: ""` and the URL as you fetched it.
+
+Sources must come from your own searches and fetches of the last 7 days. URLs that differ only in form count as the
+same page: `http` or `https`, `www.` or not, a trailing slash, a `#fragment`, or tracking parameters like `utm_*`.
+
+## Invalid records
+
+Every record is stored, even an invalid one. One that doesn't match the schema, or cites a source we can't
+find among your searches' results and fetched pages, gets a `422 invalid_record` whose `details.errors` lists
+each problem with a JSON pointer into the record:
+
+```json
+{
+  "error": "unprocessable",
+  "code": "invalid_record",
+  "message": "the record doesn't match the source_disagreement schema, or a source doesn't resolve (it was stored)",
+  "retryable": false,
+  "details": { "errors": [{ "path": "/set_aside/0/url", "message": "not among the results of search 464394922" }] },
+  "request_id": "req_…"
+}
+```
+
+The whole record is invalid if any part is: a record's meaning depends on all of its sources.

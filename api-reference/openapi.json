@@ -1,0 +1,799 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "search-mvp API",
+    "version": "1",
+    "description": ""
+  },
+  "paths": {
+    "/api/v1/search": {
+      "post": {
+        "operationId": "search_mvp_src_api_core_search",
+        "summary": "Search",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SearchOut"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Content",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Bad Gateway",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Gateway Timeout",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            }
+          }
+        },
+        "description": "Search the web: one query, up to 10 results, each with an excerpt of the page. To read a result in full,\npass its URL to `/fetch`.",
+        "tags": [
+          "search"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SearchIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/api/v1/fetch": {
+      "post": {
+        "operationId": "search_mvp_src_api_core_fetch",
+        "summary": "Fetch",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FetchOut"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Content",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Bad Gateway",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Gateway Timeout",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            }
+          }
+        },
+        "description": "Read one web page: its text, cut off at `max_chars`. A page that can't be read is a 422 `fetch_failed`.",
+        "tags": [
+          "search"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FetchIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/api/v1/feedback": {
+      "post": {
+        "operationId": "search_mvp_src_api_feedback_feedback",
+        "summary": "Feedback",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FeedbackOut"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Content Too Large",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Content",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            }
+          }
+        },
+        "description": "Record that sources disagreed about a fact, and which one you went with. Every record is stored. One that\ndoesn't match the schema, or cites a source that isn't among your searches' results or fetched pages of the\nlast 7 days, gets a 422 `invalid_record` listing what's wrong.",
+        "tags": [
+          "feedback"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FeedbackIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ResultOut": {
+        "properties": {
+          "url": {
+            "title": "Url",
+            "type": "string"
+          },
+          "title": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Title"
+          },
+          "snippet": {
+            "description": "An excerpt of the page relevant to the query.",
+            "title": "Snippet",
+            "type": "string"
+          },
+          "published_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "When the page was published (ISO 8601), if known.",
+            "title": "Published At"
+          },
+          "crawled_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "When the page was last read (ISO 8601), if known.",
+            "title": "Crawled At"
+          }
+        },
+        "required": [
+          "url",
+          "title",
+          "snippet"
+        ],
+        "title": "ResultOut",
+        "type": "object"
+      },
+      "SearchOut": {
+        "properties": {
+          "id": {
+            "description": "This search's id: pass it in `following_up_on` and feedback records.",
+            "title": "Id",
+            "type": "string"
+          },
+          "query": {
+            "title": "Query",
+            "type": "string"
+          },
+          "results": {
+            "items": {
+              "$ref": "#/components/schemas/ResultOut"
+            },
+            "title": "Results",
+            "type": "array"
+          },
+          "usage": {
+            "$ref": "#/components/schemas/Usage"
+          },
+          "request_id": {
+            "description": "Identifies this request in logs; include it when reporting a problem.",
+            "title": "Request Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "query",
+          "results",
+          "usage",
+          "request_id"
+        ],
+        "title": "SearchOut",
+        "type": "object"
+      },
+      "Usage": {
+        "properties": {
+          "credits": {
+            "description": "Credits this call used.",
+            "title": "Credits",
+            "type": "number"
+          }
+        },
+        "required": [
+          "credits"
+        ],
+        "title": "Usage",
+        "type": "object"
+      },
+      "ErrorOut": {
+        "properties": {
+          "error": {
+            "description": "The HTTP status as a word, e.g. `rate_limited`.",
+            "title": "Error",
+            "type": "string"
+          },
+          "code": {
+            "description": "Stable machine-readable error code, e.g. `invalid_request`, `fetch_failed`.",
+            "title": "Code",
+            "type": "string"
+          },
+          "message": {
+            "description": "What went wrong, for humans (and models).",
+            "title": "Message",
+            "type": "string"
+          },
+          "retryable": {
+            "description": "Whether the same request may succeed if retried.",
+            "title": "Retryable",
+            "type": "boolean"
+          },
+          "retry_after_seconds": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "When retryable, how long to wait first.",
+            "title": "Retry After Seconds"
+          },
+          "details": {
+            "description": "More about the error, e.g. `{errors: [{path, message}]}`.",
+            "title": "Details"
+          },
+          "request_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Identifies this request in logs; include it when reporting a problem.",
+            "title": "Request Id"
+          }
+        },
+        "required": [
+          "error",
+          "code",
+          "message",
+          "retryable",
+          "request_id"
+        ],
+        "title": "ErrorOut",
+        "type": "object"
+      },
+      "SearchIn": {
+        "additionalProperties": false,
+        "properties": {
+          "query": {
+            "description": "The search to run.",
+            "maxLength": 2000,
+            "minLength": 1,
+            "title": "Query",
+            "type": "string"
+          },
+          "objective": {
+            "anyOf": [
+              {
+                "maxLength": 4000,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The goal behind the search: which pages should rank first, which to leave out, and what facts to pull from them.",
+            "title": "Objective"
+          },
+          "following_up_on": {
+            "description": "Ids of your earlier searches (the `id` of their responses, last 7 days) that this one builds on: refines, checks, or continues. `[]` for an unrelated search.",
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "maxItems": 50,
+            "title": "Following Up On",
+            "type": "array"
+          },
+          "max_results": {
+            "default": 10,
+            "description": "How many results to return.",
+            "maximum": 10,
+            "minimum": 1,
+            "title": "Max Results",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "query"
+        ],
+        "title": "SearchIn",
+        "type": "object"
+      },
+      "FetchOut": {
+        "properties": {
+          "id": {
+            "description": "This fetch's id.",
+            "title": "Id",
+            "type": "string"
+          },
+          "url": {
+            "description": "The page's URL after redirects.",
+            "title": "Url",
+            "type": "string"
+          },
+          "title": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Title"
+          },
+          "content": {
+            "description": "The page's text.",
+            "title": "Content",
+            "type": "string"
+          },
+          "published_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "When the page was published (ISO 8601), if known.",
+            "title": "Published At"
+          },
+          "truncated": {
+            "description": "Whether `content` was cut off at `max_chars`.",
+            "title": "Truncated",
+            "type": "boolean"
+          },
+          "total_chars": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The whole page's length; left out when unknown.",
+            "title": "Total Chars"
+          },
+          "usage": {
+            "$ref": "#/components/schemas/Usage"
+          },
+          "request_id": {
+            "description": "Identifies this request in logs; include it when reporting a problem.",
+            "title": "Request Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "url",
+          "title",
+          "content",
+          "truncated",
+          "usage",
+          "request_id"
+        ],
+        "title": "FetchOut",
+        "type": "object"
+      },
+      "FetchIn": {
+        "additionalProperties": false,
+        "properties": {
+          "url": {
+            "description": "The page to read: a full http(s) URL.",
+            "maxLength": 4000,
+            "minLength": 8,
+            "title": "Url",
+            "type": "string"
+          },
+          "max_chars": {
+            "default": 50000,
+            "description": "Cut the content off after this many characters.",
+            "maximum": 50000,
+            "minimum": 1,
+            "title": "Max Chars",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "url"
+        ],
+        "title": "FetchIn",
+        "type": "object"
+      },
+      "FeedbackOut": {
+        "properties": {
+          "id": {
+            "description": "The stored record's id.",
+            "title": "Id",
+            "type": "string"
+          },
+          "request_id": {
+            "description": "Identifies this request in logs; include it when reporting a problem.",
+            "title": "Request Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "request_id"
+        ],
+        "title": "FeedbackOut",
+        "type": "object"
+      },
+      "FeedbackIn": {
+        "additionalProperties": false,
+        "properties": {
+          "type": {
+            "const": "source_disagreement",
+            "description": "The kind of feedback; only `source_disagreement` so far.",
+            "title": "Type",
+            "type": "string"
+          },
+          "record": {
+            "$ref": "#/components/schemas/SourceDisagreementRecord",
+            "description": "The disagreement: the fact, the source you went with, and each source you set aside."
+          }
+        },
+        "required": [
+          "type",
+          "record"
+        ],
+        "title": "FeedbackIn",
+        "type": "object"
+      },
+      "SourceDisagreementRecord": {
+        "type": "object",
+        "properties": {
+          "fact": {
+            "type": "string",
+            "description": "What the sources disagree about, e.g. \"Trestle's prix fixe price\"."
+          },
+          "went_with": {
+            "type": "object",
+            "description": "The source you went with, what it says, and why.",
+            "properties": {
+              "search_query_id": {
+                "type": "string",
+                "description": "The search_query_id of the search that returned it, exactly as shown in that search's header (e.g. \"482913\"). \"\" for a page you opened with web_fetch that wasn't one of your search results."
+              },
+              "url": {
+                "type": "string",
+                "description": "The source's URL, exactly as shown with the result, or as you opened it with web_fetch."
+              },
+              "says": {
+                "type": "string",
+                "description": "What this source says about the fact."
+              },
+              "why": {
+                "type": "string",
+                "description": "Why you went with this source, e.g. \"the restaurant's own menu, dated this week\"."
+              }
+            },
+            "required": [
+              "search_query_id",
+              "url",
+              "says",
+              "why"
+            ]
+          },
+          "supported_by": {
+            "type": "array",
+            "description": "Other sources that say the same as the one you went with, each with what it says. Leave it empty if there are none.",
+            "items": {
+              "type": "object",
+              "properties": {
+                "search_query_id": {
+                  "type": "string",
+                  "description": "The search_query_id of the search that returned it, exactly as shown in that search's header (e.g. \"482913\"). \"\" for a page you opened with web_fetch that wasn't one of your search results."
+                },
+                "url": {
+                  "type": "string",
+                  "description": "The source's URL, exactly as shown with the result, or as you opened it with web_fetch."
+                },
+                "says": {
+                  "type": "string",
+                  "description": "What this source says about the fact."
+                }
+              },
+              "required": [
+                "search_query_id",
+                "url",
+                "says"
+              ]
+            }
+          },
+          "set_aside": {
+            "type": "array",
+            "description": "Each source you didn't go with, at least one: what it says, why it differs (reason), and why you set it aside. List every one, even when several are off for the same reason.",
+            "items": {
+              "type": "object",
+              "properties": {
+                "search_query_id": {
+                  "type": "string",
+                  "description": "The search_query_id of the search that returned it, exactly as shown in that search's header (e.g. \"482913\"). \"\" for a page you opened with web_fetch that wasn't one of your search results."
+                },
+                "url": {
+                  "type": "string",
+                  "description": "The source's URL, exactly as shown with the result, or as you opened it with web_fetch."
+                },
+                "says": {
+                  "type": "string",
+                  "description": "What this source says about the fact."
+                },
+                "reason": {
+                  "type": "string",
+                  "enum": [
+                    "stale",
+                    "biased",
+                    "incorrect",
+                    "unclear"
+                  ],
+                  "description": "Why this source says something different, as best you can tell. stale: it was probably right when written, but something has changed since (a new price, new hours, a closure). biased: it has a reason to shade it (an ad, a promotion, a competitor). incorrect: it got it wrong. unclear: you can't tell."
+                },
+                "why": {
+                  "type": "string",
+                  "description": "Why you set this source aside, e.g. \"a guide from February 2025, before the price went up\"."
+                }
+              },
+              "required": [
+                "search_query_id",
+                "url",
+                "says",
+                "reason",
+                "why"
+              ]
+            }
+          },
+          "prompted_by_user": {
+            "type": "boolean",
+            "description": "true if the user prompted this, e.g. they questioned a fact and checking turned up the disagreement; false if you noticed it yourself."
+          }
+        },
+        "required": [
+          "fact",
+          "went_with",
+          "set_aside",
+          "prompted_by_user"
+        ]
+      }
+    },
+    "securitySchemes": {
+      "ApiKeyAuth": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "https://search-mvp.aligningtechnologies.com"
+    }
+  ]
+}

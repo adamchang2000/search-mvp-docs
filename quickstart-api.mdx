@@ -1,0 +1,131 @@
+---
+title: "Quickstart: API"
+description: "Search, fetch and record feedback from your own agent with an API key."
+---
+
+The API is JSON over HTTPS at:
+
+```
+https://search-mvp.aligningtechnologies.com/api/v1
+```
+
+## Authentication
+
+Every request carries your API key as a bearer token:
+
+```
+Authorization: Bearer smvp_…
+```
+
+Keys are issued on request during early access, for your own account or for a team's. A key is shown once,
+when it's issued: keep it somewhere safe (an environment variable or a secrets manager, never in code). If
+one leaks, ask for it to be revoked and a new one issued.
+
+```bash
+export SEARCH_MVP_API_KEY="smvp_…"
+```
+
+## Search
+
+```bash
+curl https://search-mvp.aligningtechnologies.com/api/v1/search \
+  -H "Authorization: Bearer $SEARCH_MVP_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"query": "Trestle San Francisco prix fixe menu price", "max_results": 5}'
+```
+
+```json Response
+{
+  "id": "464394922",
+  "query": "Trestle San Francisco prix fixe menu price",
+  "results": [
+    {
+      "url": "https://trestlesf.com/menu",
+      "title": "Menu",
+      "snippet": "Three courses, $…"
+    }
+  ],
+  "usage": { "credits": 1.0 },
+  "request_id": "req_ad382c249e2bb786"
+}
+```
+
+Keep the search's `id`. When a later search builds on this one, pass it in `following_up_on`, and use it to
+cite this search's results in feedback. See [Tools](/tools#following-up-on-earlier-searches).
+
+## Fetch a page
+
+```bash
+curl https://search-mvp.aligningtechnologies.com/api/v1/fetch \
+  -H "Authorization: Bearer $SEARCH_MVP_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"url": "https://trestlesf.com/menu", "max_chars": 20000}'
+```
+
+```json Response
+{
+  "id": "771302518",
+  "url": "https://trestlesf.com/menu",
+  "title": "Menu",
+  "content": "…the page's text…",
+  "truncated": false,
+  "total_chars": 4210,
+  "usage": { "credits": 1.0 },
+  "request_id": "req_5a1277eab398fea2"
+}
+```
+
+## Record a disagreement
+
+When sources disagree about a fact and your agent goes with one of them, record it:
+
+```bash
+curl https://search-mvp.aligningtechnologies.com/api/v1/feedback \
+  -H "Authorization: Bearer $SEARCH_MVP_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "type": "source_disagreement",
+    "record": {
+      "fact": "Trestle'\''s prix fixe price",
+      "went_with": {
+        "search_query_id": "464394922",
+        "url": "https://trestlesf.com/menu",
+        "says": "$95",
+        "why": "the restaurant'\''s own menu, dated this week"
+      },
+      "set_aside": [
+        {
+          "search_query_id": "464394922",
+          "url": "https://example-guide.com/trestle",
+          "says": "$85",
+          "reason": "stale",
+          "why": "a guide from February 2025, before the price went up"
+        }
+      ],
+      "prompted_by_user": false
+    }
+  }'
+```
+
+```json Response (201)
+{ "id": "1", "request_id": "req_…" }
+```
+
+Each source must be a result of one of your searches from the last 7 days (its `search_query_id` and URL), or
+a page you fetched in that time (`search_query_id: ""`). See [Recording disagreements](/disagreements).
+
+## Optional headers
+
+| Header | What it does |
+|---|---|
+| `X-Request-Timeout: <seconds>` | Your own deadline for this request (at most 30 s, the server's limit). Past it the server stops working on the request and answers `504 request_timeout`. |
+| `User-Agent` or `X-Search-Client` | Names your client in our logs, e.g. `my-agent/1.2`. Helps us debug with you. |
+
+Every response has an `X-Request-Id` header (and `request_id` in the body). Include it when you report a
+problem.
+
+## Next
+
+- [Tools](/tools): how search, fetch and following up fit together in an agent.
+- [Limits and errors](/limits-and-errors): rate limits, timeouts, and what each error code means.
+- [API reference](/api-reference/search): every field of every request and response.

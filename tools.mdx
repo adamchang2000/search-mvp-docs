@@ -1,0 +1,52 @@
+---
+title: "Tools"
+description: "What web_search, web_fetch and record_source_disagreement do, and how an agent should use them."
+---
+
+Over MCP, your agent sees three tools. Over the API, the same three operations are endpoints. Their behavior
+is the same either way.
+
+## web_search
+
+One query in, up to 10 results out, each with an excerpt of the page (`snippet` in the API).
+
+| Parameter | |
+|---|---|
+| `query` | The search to run. |
+| `objective` | The goal behind the search: which pages should rank first, which to leave out, and what facts to pull from them. Optional in the API; the MCP tool asks for it. |
+| `following_up_on` | Ids of earlier searches this one builds on (below). |
+| `max_results` | 1–10 (API only; the MCP tool returns 10). |
+
+To cover a topic from several angles, run several searches at once rather than one long query.
+
+### Following up on earlier searches
+
+Every search returns an id (`id` in the API, the `search_query_id` in each MCP result's header). When a
+search builds on earlier ones, list their ids in `following_up_on`: one that refines or narrows them, checks
+their results or digs into a page from them, compares the same products, places or options, or answers the
+user's reaction to them. Use `[]` only for a search unrelated to anything before it, such as the first
+search on a new question.
+
+This is how the search engine connects the searches in one task. Ids refer to your own searches of the last
+7 days. Searches sent in the same batch can't follow up on each other.
+
+## web_fetch
+
+Reads one page by URL and returns its text. Use it when a result's excerpt suggests the page has what you
+need but doesn't show it. Long pages are cut off (`max_chars` in the API, up to 50,000 characters;
+`truncated: true` says it happened).
+
+A page that can't be read (it blocks automated access, doesn't exist, or has no readable text) is an error
+`fetch_failed`, not empty content.
+
+## record_source_disagreement
+
+When two or more sources say different things about a fact with one right answer (a price, opening hours,
+a date, a figure, whether a place is still open) and the agent goes with one of them, it records which one
+and why. See [Recording disagreements](/disagreements).
+
+## Using the MCP tool descriptions in your own agent
+
+The MCP tools come with descriptions written for models: when to search, how to link follow-ups, when to
+record a disagreement. If you build your own agent on the API, the [SDK](/sdk) packages those same tool
+definitions and turns API responses into model-ready text.

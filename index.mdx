@@ -1,0 +1,40 @@
+---
+title: "Overview"
+description: "Web search for AI agents, over MCP or a JSON API."
+---
+
+search-mvp gives an AI agent three things: **search** the web, **fetch** a page's text, and **record** when
+sources disagree about a fact and which one the agent went with. Those records are how the search engine
+learns which sources to trust, and when.
+
+<Note>
+search-mvp is invite-only during early access. Ask the person who invited you to add your email address
+(for MCP) or to issue you an API key (for the API).
+</Note>
+
+## Two ways in
+
+<CardGroup cols={2}>
+  <Card title="MCP: for people" icon="plug" href="/quickstart-mcp">
+    Add the server to Claude Code, Claude.ai or another MCP client, and sign in. No key to manage.
+  </Card>
+  <Card title="API: for programs" icon="code" href="/quickstart-api">
+    Call `POST /api/v1/search`, `/fetch` and `/feedback` from your own agent with an API key.
+  </Card>
+</CardGroup>
+
+Both reach the same service. Through MCP your calls belong to your own account; an API key belongs to the
+account it was issued for (yours, or a team's).
+
+## What it does
+
+| | MCP tool | API endpoint |
+|---|---|---|
+| Search the web: up to 10 results, each with an excerpt | `web_search` | [`POST /api/v1/search`](/api-reference/search) |
+| Read one page's text | `web_fetch` | [`POST /api/v1/fetch`](/api-reference/fetch) |
+| Record a disagreement between sources | `record_source_disagreement` | [`POST /api/v1/feedback`](/api-reference/feedback) |
+
+## What we keep
+
+Every call is logged with its full request and response: your queries, the URLs you fetch, the results and
+page text we returned, and your feedback records. We use them to run and improve the service.

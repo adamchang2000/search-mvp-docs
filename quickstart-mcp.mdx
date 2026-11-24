@@ -1,0 +1,82 @@
+---
+title: "Quickstart: MCP"
+description: "Add search-mvp to Claude Code, Claude.ai or another MCP client."
+---
+
+The MCP server is at:
+
+```
+https://search-mvp.aligningtechnologies.com/mcp
+```
+
+It uses the standard remote transport (Streamable HTTP) and OAuth sign-in, so any MCP client that supports
+remote servers can connect. There's nothing secret to configure: the first connection opens a sign-in page.
+
+<Note>
+Before you start, make sure your email address has been invited. You must sign in with **that exact address**.
+</Note>
+
+## Connect
+
+<Tabs>
+  <Tab title="Claude Code">
+    <Steps>
+      <Step title="Add the server">
+        ```bash
+        claude mcp add --transport http search-mvp https://search-mvp.aligningtechnologies.com/mcp
+        ```
+        `--transport http` tells Claude Code this is a remote server URL, not a local command to run.
+        Add `--scope user` to make it available in every project.
+      </Step>
+      <Step title="Sign in">
+        In Claude Code, run `/mcp`, choose **search-mvp**, then **Authenticate**. A browser opens; sign in
+        with your invited email (see [Signing in](#signing-in)).
+      </Step>
+      <Step title="Try it">
+        Ask Claude something that needs a search, e.g. *"What's on the menu at Trestle in San Francisco this week?"*.
+        It will use `web_search` and `web_fetch`.
+      </Step>
+    </Steps>
+  </Tab>
+  <Tab title="Claude.ai">
+    <Steps>
+      <Step title="Add a custom connector">
+        In **Settings → Connectors**, choose **Add custom connector**. Name it `search-mvp` and enter the URL
+        `https://search-mvp.aligningtechnologies.com/mcp`.
+      </Step>
+      <Step title="Connect and sign in">
+        Choose **Connect**; a sign-in page opens. Sign in with your invited email.
+      </Step>
+      <Step title="Turn it on in a chat">
+        In a conversation, enable **search-mvp** from the tools menu.
+      </Step>
+    </Steps>
+  </Tab>
+  <Tab title="Other clients">
+    Add a remote MCP server with the URL above. The client needs to support:
+    - the **Streamable HTTP** transport;
+    - **OAuth** sign-in as in the MCP authorization spec: the server answers an unauthenticated request with
+      `401` and a `WWW-Authenticate` header pointing at
+      `/.well-known/oauth-protected-resource`, which names the sign-in server.
+
+    Clients register themselves automatically (Client ID Metadata Documents, or Dynamic Client Registration
+    for older clients).
+  </Tab>
+</Tabs>
+
+## Signing in
+
+The sign-in page offers Google, Microsoft, GitHub, or a one-time code sent to your email. Whichever you
+choose, the account's email must be the invited address, and verified.
+
+The first time you sign in, your sign-in is linked to your invitation; after that you're recognized
+automatically. Sign-ins expire after a while and your client renews them; if it asks you to sign in again,
+do the same as before.
+
+## Troubleshooting
+
+| What you see | What it means |
+|---|---|
+| `403` **not_invited**: "This user hasn't been invited to search-mvp…" | The email you signed in with isn't the invited one (or isn't verified). Sign in with the invited address, or ask for this one to be invited. |
+| The client keeps asking you to sign in | Your access was turned off, or the client didn't keep its sign-in. Remove and re-add the server. |
+| Tools don't appear | Check the server shows as connected (`/mcp` in Claude Code), and in Claude.ai that it's enabled in the conversation. |

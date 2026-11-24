@@ -1,0 +1,30 @@
+---
+title: "Python SDK"
+description: "Tool definitions and a client for building your own agent on the API."
+---
+
+<Note>
+The SDK isn't published yet. Contact us for access.
+</Note>
+
+If you're building your own agent on the API rather than using MCP, the Python SDK saves you writing the
+glue:
+
+- **Tool definitions**: `web_search`, `web_fetch` and `record_source_disagreement`, with the descriptions the
+  MCP tools use, in Anthropic, OpenAI Chat Completions and OpenAI Responses formats.
+- **`run_tool_call`**: maps a model's tool call to an API request and returns model-ready text: results with
+  their `search_query_id`s, page text, and errors as messages the model can act on.
+- **A client** (sync and async) with timeouts, and typed errors carrying the API's `code` and `retryable`.
+
+```python
+from search_mvp_sdk import TOOLS, SearchClient, run_tool_call
+
+client = SearchClient()  # reads SEARCH_MVP_API_KEY from the environment
+tools = TOOLS.anthropic  # or TOOLS.openai / TOOLS.openai_responses
+
+# In your agent loop, for each tool call the model makes:
+text = run_tool_call(call.name, call.arguments, client)
+```
+
+Until then, everything the SDK does is plain HTTP: see the [API quickstart](/quickstart-api) and the
+[API reference](/api-reference/search).
