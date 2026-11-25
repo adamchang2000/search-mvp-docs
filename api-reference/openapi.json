@@ -487,7 +487,7 @@
       "FetchOut": {
         "properties": {
           "id": {
-            "description": "This fetch's id.",
+            "description": "This fetch's id: pass it as `fetch_id` in feedback records citing this page.",
             "title": "Id",
             "type": "string"
           },
@@ -579,6 +579,22 @@
             "minimum": 1,
             "title": "Max Chars",
             "type": "integer"
+          },
+          "following_up_on": {
+            "description": "Ids of your searches (the `id` of their responses, last 7 days) whose results led you to this page. `[]` for a URL that didn't come from your searches.",
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "maxItems": 50,
+            "title": "Following Up On",
+            "type": "array"
           }
         },
         "required": [
@@ -641,7 +657,11 @@
             "properties": {
               "search_query_id": {
                 "type": "string",
-                "description": "The search_query_id of the search that returned it, exactly as shown in that search's header (e.g. \"482913\"). \"\" for a page you opened with web_fetch that wasn't one of your search results."
+                "description": "The search_query_id of the search that returned it, exactly as shown in that search's header (e.g. \"482913\"), for a source you saw in search results. \"\" for a page you read with web_fetch: give its fetch_id instead."
+              },
+              "fetch_id": {
+                "type": "string",
+                "description": "The fetch_id of the web_fetch call you read it with, exactly as shown at the top of the page (e.g. \"571204\"), for a page you read with web_fetch. \"\" for a search result you didn't open with web_fetch."
               },
               "url": {
                 "type": "string",
@@ -658,6 +678,7 @@
             },
             "required": [
               "search_query_id",
+              "fetch_id",
               "url",
               "says",
               "why"
@@ -671,7 +692,11 @@
               "properties": {
                 "search_query_id": {
                   "type": "string",
-                  "description": "The search_query_id of the search that returned it, exactly as shown in that search's header (e.g. \"482913\"). \"\" for a page you opened with web_fetch that wasn't one of your search results."
+                  "description": "The search_query_id of the search that returned it, exactly as shown in that search's header (e.g. \"482913\"), for a source you saw in search results. \"\" for a page you read with web_fetch: give its fetch_id instead."
+                },
+                "fetch_id": {
+                  "type": "string",
+                  "description": "The fetch_id of the web_fetch call you read it with, exactly as shown at the top of the page (e.g. \"571204\"), for a page you read with web_fetch. \"\" for a search result you didn't open with web_fetch."
                 },
                 "url": {
                   "type": "string",
@@ -684,6 +709,7 @@
               },
               "required": [
                 "search_query_id",
+                "fetch_id",
                 "url",
                 "says"
               ]
@@ -697,7 +723,11 @@
               "properties": {
                 "search_query_id": {
                   "type": "string",
-                  "description": "The search_query_id of the search that returned it, exactly as shown in that search's header (e.g. \"482913\"). \"\" for a page you opened with web_fetch that wasn't one of your search results."
+                  "description": "The search_query_id of the search that returned it, exactly as shown in that search's header (e.g. \"482913\"), for a source you saw in search results. \"\" for a page you read with web_fetch: give its fetch_id instead."
+                },
+                "fetch_id": {
+                  "type": "string",
+                  "description": "The fetch_id of the web_fetch call you read it with, exactly as shown at the top of the page (e.g. \"571204\"), for a page you read with web_fetch. \"\" for a search result you didn't open with web_fetch."
                 },
                 "url": {
                   "type": "string",
@@ -724,6 +754,7 @@
               },
               "required": [
                 "search_query_id",
+                "fetch_id",
                 "url",
                 "says",
                 "reason",

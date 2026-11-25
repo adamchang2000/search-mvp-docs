@@ -22,6 +22,7 @@ February 2025, and Eater's map from 2022, several price rises ago. It answers $5
   "fact": "Trestle's prix fixe price per person",
   "went_with": {
     "search_query_id": "",
+    "fetch_id": "771302518",
     "url": "https://www.trestlesf.com/menu",
     "says": "$52 per person for the four-course prix fixe",
     "why": "The restaurant's own current menu."
@@ -29,6 +30,7 @@ February 2025, and Eater's map from 2022, several price rises ago. It answers $5
   "set_aside": [
     {
       "search_query_id": "464394922",
+      "fetch_id": "",
       "url": "https://www.timeout.com/san-francisco/restaurants/romantic-restaurants-in-san-francisco",
       "says": "Weekly $45 prix-fixe menu",
       "reason": "stale",
@@ -36,6 +38,7 @@ February 2025, and Eater's map from 2022, several price rises ago. It answers $5
     },
     {
       "search_query_id": "464394922",
+      "fetch_id": "",
       "url": "https://sf.eater.com/maps/most-romantic-restaurants-san-francisco",
       "says": "Prix fixe costs just $45",
       "reason": "stale",
@@ -46,8 +49,8 @@ February 2025, and Eater's map from 2022, several price rises ago. It answers $5
 }
 ```
 
-The menu was a page the agent fetched, not a search result, so its `search_query_id` is `""`. The guides
-came from search `464394922`.
+The menu was a page the agent read with fetch `771302518`, so it's cited by that `fetch_id`, with
+`search_query_id` `""`. The guides came from search `464394922`.
 
 Without the record, the next agent that asks a similar question meets the same two guides, near the top
 of its results, saying the same out-of-date $45. Either it spends extra searches and fetches tracking down
@@ -87,9 +90,9 @@ Record it as soon as the call is made, before replying. One record per disagreem
 | Field | |
 |---|---|
 | `fact` | What the sources disagree about, e.g. `"Trestle's prix fixe price"`. |
-| `went_with` | The source you went with: `search_query_id`, `url`, what it `says`, and `why` you chose it. |
-| `supported_by` | Other sources that agree with it, each with `search_query_id`, `url` and `says`. Optional. |
-| `set_aside` | Every source you didn't go with (at least one): `search_query_id`, `url`, `says`, a `reason`, and `why`. |
+| `went_with` | The source you went with: `search_query_id`, `fetch_id`, `url`, what it `says`, and `why` you chose it. |
+| `supported_by` | Other sources that agree with it, each with `search_query_id`, `fetch_id`, `url` and `says`. Optional. |
+| `set_aside` | Every source you didn't go with (at least one): `search_query_id`, `fetch_id`, `url`, `says`, a `reason`, and `why`. |
 | `prompted_by_user` | `true` if the user prompted it (e.g. questioned a fact); `false` if you noticed it yourself. |
 
 `reason` is why a set-aside source differs, as best you can tell:
@@ -107,14 +110,20 @@ The full schema is in the [API reference](/api-reference/feedback).
 
 Each source is identified by where you found it:
 
-- **A search result:** the `search_query_id` of the search that returned it, and its URL as shown with the
-  result.
-- **A page you fetched** that wasn't a search result: `search_query_id: ""` and the URL as you fetched it.
+- **A search result:** the `search_query_id` of the search that returned it, `fetch_id: ""`, and its URL as
+  shown with the result.
+- **A page you fetched:** the `fetch_id` of the fetch that read it (the fetch response's `id`),
+  `search_query_id: ""`, and the URL as you fetched it or as it was redirected to. The fetch must have
+  returned the page.
+
+Every id a source gives must resolve. Records from clients that don't send `fetch_id` (SDK before 0.2.0) are
+still accepted: a source with both ids `""` (or no `fetch_id`) resolves if you fetched its URL and got a page
+back.
 
 Sources must come from your own searches and fetches of the last 7 days. URLs that differ only in form count as the
 same page: `http` or `https`, `www.` or not, a trailing slash, a `#fragment`, or tracking parameters like `utm_*`.
-For a search result, a URL with part of its query string or path dropped (`/products/refill` for
-`/products/refill?variant=4355`) also counts, as long as it matches only one result of that search. Send the URL as
+A URL with part of its query string or path dropped (`/products/refill` for `/products/refill?variant=4355`)
+also counts, as long as it matches only one result of the cited search, or the cited fetch's page. Send the URL as
 shown with the result when you can.
 
 ## Invalid records

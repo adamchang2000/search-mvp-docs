@@ -13,7 +13,7 @@ glue:
 - **Tool definitions**: `web_search`, `web_fetch` and `record_source_disagreement`, with the descriptions the
   MCP tools use, in Anthropic, OpenAI Chat Completions and OpenAI Responses formats.
 - **`run_tool_call`**: maps a model's tool call to an API request and returns model-ready text: results with
-  their `search_query_id`s, page text, and errors as messages the model can act on.
+  their `search_query_id`s, page text with its `fetch_id`, and errors as messages the model can act on.
 - **A client** (sync and async) with timeouts, and typed errors carrying the API's `code` and `retryable`.
 
 ```python

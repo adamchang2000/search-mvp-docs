@@ -36,6 +36,16 @@ Reads one page by URL and returns its text. Use it when a result's excerpt sugge
 need but doesn't show it. Long pages are cut off (`max_chars` in the API, up to 50,000 characters;
 `truncated: true` says it happened).
 
+| Parameter | |
+|---|---|
+| `url` | The page to read. |
+| `following_up_on` | Ids of the searches whose results led to this page: the search that returned it, and any whose results pointed to it. `[]` if the URL didn't come from your searches (the user gave it). Optional in the API; the MCP tool asks for it. |
+| `max_chars` | 1–50,000 (API only). |
+
+Every fetch returns an id (`id` in the API, the `fetch_id` on the line after `Fetch: <url>` in each MCP
+result). It's how a [source disagreement](/feedback/source-disagreements#citing-sources) cites a page read
+this way.
+
 A page that can't be read (it blocks automated access, doesn't exist, or has no readable text) is an error
 `fetch_failed`, not empty content.
 
