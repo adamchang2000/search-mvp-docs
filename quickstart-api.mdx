@@ -118,7 +118,7 @@ a page you fetched in that time (`search_query_id: ""`). See [Recording disagree
 
 | Header | What it does |
 |---|---|
-| `X-Request-Timeout: <seconds>` | Your own deadline for this request (at most 30 s, the server's limit). Past it the server stops working on the request and answers `504 request_timeout`. |
+| `X-Request-Timeout: <seconds>` | Your own deadline for this request (at most 30 s, the server's limit). Past it the server stops working on the request and answers `503 request_timeout`. |
 | `User-Agent` or `X-Search-Client` | Names your client in our logs, e.g. `my-agent/1.2`. Helps us debug with you. |
 
 Every response has an `X-Request-Id` header (and `request_id` in the body). Include it when you report a

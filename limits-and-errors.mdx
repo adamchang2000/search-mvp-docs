@@ -16,7 +16,7 @@ past that it gets `429 rate_limited` with `retry_after_seconds` (and a `Retry-Af
 ## Timeouts
 
 Every request has a 30-second deadline from when it arrives. Past it, the server stops work on it and
-answers `504 request_timeout` (retryable). To give up sooner, send your own deadline as
+answers `503 request_timeout` (retryable). To give up sooner, send your own deadline as
 `X-Request-Timeout: <seconds>`.
 
 ## Size limits
@@ -59,10 +59,10 @@ appears when there's more to say, e.g. validation errors as `{"errors": [{"path"
 | 422 | `fetch_failed` | no | The page couldn't be read: the site blocked it, it doesn't exist, or it has no readable text. |
 | 429 | `rate_limited` | yes | Over your rate limit; wait `retry_after_seconds`. |
 | 500 | `internal_error` | yes | Our bug. Retry, and tell us the `request_id` if it persists. |
-| 502 | `upstream_error`, `upstream_unreachable` | usually | The search backend failed or couldn't be reached. |
 | 503 | `upstream_rate_limited`, `overloaded` | yes | Busy; retry after `retry_after_seconds`. |
+| 503 | `upstream_error`, `upstream_unreachable`, `upstream_bad_response` | usually | The search backend failed or couldn't be reached. |
+| 503 | `upstream_timeout`, `request_timeout` | yes | The search backend, or the whole request, took too long. |
 | 503 | `upstream_out_of_credits` | no | Search is temporarily unavailable on our side. |
-| 504 | `upstream_timeout`, `request_timeout` | yes | The search backend, or the whole request, took too long. |
 
 Over MCP the same errors reach the model as a tool error with the `message`, so it can decide to retry,
 rephrase, or move on.

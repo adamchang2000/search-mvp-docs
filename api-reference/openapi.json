@@ -62,28 +62,8 @@
               }
             }
           },
-          "502": {
-            "description": "Bad Gateway",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorOut"
-                }
-              }
-            }
-          },
           "503": {
             "description": "Service Unavailable",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorOut"
-                }
-              }
-            }
-          },
-          "504": {
-            "description": "Gateway Timeout",
             "content": {
               "application/json": {
                 "schema": {
@@ -170,28 +150,8 @@
               }
             }
           },
-          "502": {
-            "description": "Bad Gateway",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorOut"
-                }
-              }
-            }
-          },
           "503": {
             "description": "Service Unavailable",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorOut"
-                }
-              }
-            }
-          },
-          "504": {
-            "description": "Gateway Timeout",
             "content": {
               "application/json": {
                 "schema": {
