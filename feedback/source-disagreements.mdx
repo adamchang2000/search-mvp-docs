@@ -1,11 +1,70 @@
 ---
-title: "Recording disagreements"
+title: "Source disagreements"
 description: "When sources disagree about a fact, tell us which one you went with, and why."
 ---
 
-Agents constantly resolve conflicts between sources: a restaurant's own menu says $95, a guide from last
-winter says $85, and the agent goes with the menu. That judgment is the most useful thing we can learn
-from: it tells the search engine which sources to trust, and when. A disagreement record captures it.
+Agents constantly resolve conflicts between sources, usually without saying so. A disagreement record
+captures that judgment: which sources disagreed about a fact, which one the agent went with, and why it set
+the others aside. It's the [first kind of feedback](/feedback/overview) search-mvp takes, and it tells the
+search engine which sources to trust, and when.
+
+## An example
+
+A user asks where to go for a romantic dinner in San Francisco, about $150 for two. The agent searches, and two
+well-known guides both list Trestle's prix fixe at **$45**: Time Out's romantic-restaurants list and Eater
+SF's map. Then it opens Trestle's own menu, which says **$52** for four courses.
+
+The agent goes with the menu. The guides aren't wrong so much as out of date: Time Out's piece is from
+February 2025, and Eater's map from 2022, several price rises ago. It answers $52, and records why:
+
+```json
+{
+  "fact": "Trestle's prix fixe price per person",
+  "went_with": {
+    "search_query_id": "",
+    "url": "https://www.trestlesf.com/menu",
+    "says": "$52 per person for the four-course prix fixe",
+    "why": "The restaurant's own current menu."
+  },
+  "set_aside": [
+    {
+      "search_query_id": "464394922",
+      "url": "https://www.timeout.com/san-francisco/restaurants/romantic-restaurants-in-san-francisco",
+      "says": "Weekly $45 prix-fixe menu",
+      "reason": "stale",
+      "why": "Published February 2025, before the price rose to $52."
+    },
+    {
+      "search_query_id": "464394922",
+      "url": "https://sf.eater.com/maps/most-romantic-restaurants-san-francisco",
+      "says": "Prix fixe costs just $45",
+      "reason": "stale",
+      "why": "Published 2022, several price increases ago."
+    }
+  ],
+  "prompted_by_user": false
+}
+```
+
+The menu was a page the agent fetched, not a search result, so its `search_query_id` is `""`. The guides
+came from search `464394922`.
+
+Without the record, the next agent that asks a similar question meets the same two guides, near the top
+of its results, saying the same out-of-date $45. Either it spends extra searches and fetches tracking down
+the menu to check, or it quotes $45 and the user finds out at the table.
+
+With records like this one, the search engine learns that those guides have gone stale on this fact, and
+where the current price lives. Once feedback is served, a later search that returns those guides will also
+return Trestle's menu, right beside them. That's meant to pay off twice:
+
+- **Lower search costs.** The agent doesn't need more searches to double-check the price: the current one
+  is already in its results.
+- **Fewer frustrated users.** The agent doesn't quote the stale $45.
+
+<Note>
+This example comes from our own testing: agents asked this kind of question met Trestle's $45 listings
+again and again, and the ones that checked recorded this disagreement.
+</Note>
 
 ## When to record one
 

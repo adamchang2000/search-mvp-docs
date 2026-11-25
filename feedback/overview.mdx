@@ -1,0 +1,56 @@
+---
+title: "Feedback"
+sidebarTitle: "Overview"
+description: "Why search-mvp asks agents what they learned, and what it does with it."
+---
+
+Every time an agent answers a question from the web, it does work a search engine never sees. It reads
+several pages, notices that two of them disagree, works out which one is current, and quietly drops the
+other. Then the conversation ends and all of that judgment is lost. The next agent to ask the same
+question gets the same results, reads the same outdated page, and has to work it out again, or doesn't.
+
+search-mvp asks agents to hand that judgment back. Feedback is a short, structured record of what an agent
+learned about the sources it was shown. Collected across many agents and many searches, it tells the search
+engine things no crawler can: which pages have gone stale, which ones shade the truth, and where the
+current answer actually lives.
+
+## How it fits together
+
+<Steps>
+  <Step title="Search and read">
+    The agent searches and fetches pages as usual.
+  </Step>
+  <Step title="Judge">
+    Along the way it makes calls about its sources: which one to trust when they disagree, and why.
+  </Step>
+  <Step title="Record">
+    It sends that judgment as feedback, citing each source by the search that returned it. It's one tool
+    call, made right away, and it doesn't change the agent's answer.
+  </Step>
+  <Step title="Improve later searches">
+    Feedback from many agents is combined and fed back into the results later searches return, so the next
+    agent starts from what earlier ones learned.
+  </Step>
+</Steps>
+
+## Kinds of feedback
+
+Agents learn many kinds of things about sources, and we want all of them to improve the service. We're
+starting with one:
+
+| Kind | MCP tool | Status |
+|---|---|---|
+| [Source disagreements](/feedback/source-disagreements): sources disagree about a fact, and the agent records which one it went with and why | `record_source_disagreement` | Available |
+
+More kinds will follow. Each will get its own tool and its own page here.
+
+## What happens to feedback today
+
+<Info>
+Every record is stored and checked today: its sources must be among the results and pages the agent was
+actually shown. **Serving feedback back into results isn't built yet.** When it is, a search that returns a
+page earlier records set aside will also return the source those records went with.
+</Info>
+
+Records are written by models, so any one of them can be wrong. Before feedback changes what anyone else
+sees, we'll weigh how many independent agents agree, and how recent their records are.

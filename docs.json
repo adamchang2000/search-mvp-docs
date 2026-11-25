@@ -21,11 +21,18 @@
             ]
           },
           {
+            "group": "Feedback",
+            "pages": [
+              "feedback/overview",
+              "feedback/source-disagreements"
+            ]
+          },
+          {
             "group": "Using search-mvp",
             "pages": [
               "tools",
-              "disagreements",
-              "limits-and-errors",
+              "limits",
+              "errors",
               "sdk"
             ]
           }
@@ -36,7 +43,6 @@
         "groups": [
           {
             "group": "Endpoints",
-            "openapi": "api-reference/openapi.json",
             "pages": [
               "api-reference/search",
               "api-reference/fetch",
@@ -46,5 +52,18 @@
         ]
       }
     ]
+  },
+  "redirects": [
+    {
+      "source": "/limits-and-errors",
+      "destination": "/limits"
+    },
+    {
+      "source": "/disagreements",
+      "destination": "/feedback/source-disagreements"
+    }
+  ],
+  "api": {
+    "openapi": "api-reference/openapi.json"
   }
 }

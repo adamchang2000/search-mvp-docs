@@ -1,0 +1,35 @@
+---
+title: "Limits"
+description: "Rate limits, timeouts, and size limits."
+---
+
+## Rate limits
+
+| | Limit |
+|---|---|
+| Search and fetch (together) | 60 calls per minute per account, unless yours has been set differently |
+| Feedback | 10 times your search-and-fetch limit |
+
+A short burst up to the minute's worth is fine. When you're over, a request may wait briefly for a slot;
+past that it gets [`429 rate_limited`](/errors) with `retry_after_seconds` (and a `Retry-After` header).
+
+## Timeouts
+
+Every request has a 30-second deadline from when it arrives. Past it, the server stops work on it and
+answers [`503 request_timeout`](/errors) (retryable). To give up sooner, send your own deadline as
+`X-Request-Timeout: <seconds>`.
+
+## Size limits
+
+| | Limit |
+|---|---|
+| `query` | 2,000 characters |
+| `objective` | 4,000 characters |
+| `following_up_on` | 50 ids |
+| `max_results` | 1–10 |
+| `url` (fetch) | 4,000 characters, a full `http(s)` URL |
+| `max_chars` (fetch) | 1–50,000 |
+| Feedback `record` | 64 KB |
+
+Going over a size limit gets `422 invalid_request` (with `details.errors` saying which field) or, for a feedback record, `413 record_too_large`.
+See [Errors](/errors) for every code.

@@ -13,7 +13,7 @@
         "parameters": [],
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "OK\n\n> **Coming soon: feedback served with results.** Not built yet. Once it is, when a search returns a page that earlier [disagreement records](/feedback/source-disagreements) set aside, the source those records went with will come back too, as another result right after it.",
             "content": {
               "application/json": {
                 "schema": {
@@ -101,7 +101,7 @@
         "parameters": [],
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "OK\n\n> **Coming soon: feedback served with pages.** Not built yet. Once it is, fetching a page will also return what earlier [disagreement records](/feedback/source-disagreements) said about it.",
             "content": {
               "application/json": {
                 "schema": {

@@ -3,9 +3,13 @@ title: "Overview"
 description: "Web search for AI agents, over MCP or a JSON API."
 ---
 
-search-mvp gives an AI agent three things: **search** the web, **fetch** a page's text, and **record** when
-sources disagree about a fact and which one the agent went with. Those records are how the search engine
-learns which sources to trust, and when.
+search-mvp is web search for AI agents that learns from the agents using it. An agent can **search** the
+web, **fetch** a page's text, and give **feedback** on what it found. That feedback is how the search engine
+improves: what one agent learns about a source, later searches can use. [Why feedback?](/feedback/overview)
+
+The first kind of feedback is [source disagreements](/feedback/source-disagreements): when sources disagree about a fact,
+the agent records which one it went with and why. More kinds will follow, all feeding back into the results
+the service returns.
 
 <Note>
 search-mvp is invite-only during early access. Ask the person who invited you to add your email address
@@ -38,7 +42,7 @@ one plain-text file.
 |---|---|---|
 | Search the web: up to 10 results, each with an excerpt | `web_search` | [`POST /api/v1/search`](/api-reference/search) |
 | Read one page's text | `web_fetch` | [`POST /api/v1/fetch`](/api-reference/fetch) |
-| Record a disagreement between sources | `record_source_disagreement` | [`POST /api/v1/feedback`](/api-reference/feedback) |
+| Give feedback. Today: record a disagreement between sources | `record_source_disagreement` | [`POST /api/v1/feedback`](/api-reference/feedback) |
 
 ## What we keep
 

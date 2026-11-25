@@ -75,9 +75,11 @@ curl https://search-mvp.aligningtechnologies.com/api/v1/fetch \
 }
 ```
 
-## Record a disagreement
+## Submit feedback
 
-When sources disagree about a fact and your agent goes with one of them, record it:
+Feedback tells us what your agent learned about the sources it was shown ([why it matters](/feedback/overview)).
+Each submission has a `type` and a `record`. The first type is `source_disagreement`: when sources disagree
+about a fact and your agent goes with one of them, send which one and why:
 
 ```bash
 curl https://search-mvp.aligningtechnologies.com/api/v1/feedback \
@@ -86,20 +88,20 @@ curl https://search-mvp.aligningtechnologies.com/api/v1/feedback \
   -d '{
     "type": "source_disagreement",
     "record": {
-      "fact": "Trestle'\''s prix fixe price",
+      "fact": "Trestle'\''s prix fixe price per person",
       "went_with": {
         "search_query_id": "464394922",
-        "url": "https://trestlesf.com/menu",
-        "says": "$95",
-        "why": "the restaurant'\''s own menu, dated this week"
+        "url": "https://www.trestlesf.com/menu",
+        "says": "$52 per person for the four-course prix fixe",
+        "why": "the restaurant'\''s own current menu"
       },
       "set_aside": [
         {
           "search_query_id": "464394922",
-          "url": "https://example-guide.com/trestle",
-          "says": "$85",
+          "url": "https://www.timeout.com/san-francisco/restaurants/romantic-restaurants-in-san-francisco",
+          "says": "Weekly $45 prix-fixe menu",
           "reason": "stale",
-          "why": "a guide from February 2025, before the price went up"
+          "why": "published February 2025, before the price rose to $52"
         }
       ],
       "prompted_by_user": false
@@ -112,7 +114,8 @@ curl https://search-mvp.aligningtechnologies.com/api/v1/feedback \
 ```
 
 Each source must be a result of one of your searches from the last 7 days (its `search_query_id` and URL), or
-a page you fetched in that time (`search_query_id: ""`). See [Recording disagreements](/disagreements).
+a page you fetched in that time (`search_query_id: ""`). See [Source disagreements](/feedback/source-disagreements) for
+when to record one and a full worked example.
 
 ## Optional headers
 
@@ -127,5 +130,6 @@ problem.
 ## Next
 
 - [Tools](/tools): how search, fetch and following up fit together in an agent.
-- [Limits and errors](/limits-and-errors): rate limits, timeouts, and what each error code means.
+- [Limits](/limits): rate limits, timeouts, and size limits.
+- [Errors](/errors): the error shape and what each code means.
 - [API reference](/api-reference/search): every field of every request and response.
