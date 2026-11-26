@@ -476,6 +476,19 @@
             "minimum": 1,
             "title": "Max Results",
             "type": "integer"
+          },
+          "client_model": {
+            "anyOf": [
+              {
+                "maxLength": 200,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The model generating this request and reading the results, as its provider names it, e.g. `claude-opus-5-5`. Optional; stored as given.",
+            "title": "Client Model"
           }
         },
         "required": [
@@ -595,6 +608,19 @@
             "maxItems": 50,
             "title": "Following Up On",
             "type": "array"
+          },
+          "client_model": {
+            "anyOf": [
+              {
+                "maxLength": 200,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The model generating this request and reading the results, as its provider names it, e.g. `claude-opus-5-5`. Optional; stored as given.",
+            "title": "Client Model"
           }
         },
         "required": [
@@ -635,6 +661,19 @@
           "record": {
             "$ref": "#/components/schemas/SourceDisagreementRecord",
             "description": "The disagreement: the fact, the source you went with, and each source you set aside."
+          },
+          "client_model": {
+            "anyOf": [
+              {
+                "maxLength": 200,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The model generating this request and reading the results, as its provider names it, e.g. `claude-opus-5-5`. Optional; stored as given.",
+            "title": "Client Model"
           }
         },
         "required": [

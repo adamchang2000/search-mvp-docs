@@ -23,8 +23,11 @@ client = SearchClient()  # reads SEARCH_MVP_API_KEY from the environment
 tools = TOOLS.anthropic  # or TOOLS.openai / TOOLS.openai_responses
 
 # In your agent loop, for each tool call the model makes:
-text = run_tool_call(call.name, call.arguments, client)
+text = run_tool_call(call.name, call.arguments, client, client_model="claude-opus-5-5")
 ```
+
+`client_model` is optional: the model making the calls, as its provider names it. The per-provider helpers
+(`handle_tool_calls`, `handle_tool_use`) fill it in from the model's response.
 
 Until then, everything the SDK does is plain HTTP: see the [API quickstart](/quickstart-api) and the
 [API reference](/api-reference/search).
