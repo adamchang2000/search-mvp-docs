@@ -321,7 +321,7 @@
       "SearchOut": {
         "properties": {
           "id": {
-            "description": "This search's id: pass it in `following_up_on` and feedback records.",
+            "description": "This search's id (its web_query_id): pass it in `following_up_on` and in feedback records' sources (`web_query_id`).",
             "title": "Id",
             "type": "string"
           },
@@ -454,7 +454,7 @@
             "title": "Objective"
           },
           "following_up_on": {
-            "description": "Ids of your earlier searches (the `id` of their responses, last 7 days) that this one builds on: refines, checks, or continues. `[]` for an unrelated search.",
+            "description": "Ids (web_query_ids) of your earlier searches and fetches (the `id` of their responses, last 7 days) that this one builds on: a search it refines, checks, or continues, or a page it follows up on. `[]` for an unrelated search.",
             "items": {
               "anyOf": [
                 {
@@ -500,7 +500,7 @@
       "FetchOut": {
         "properties": {
           "id": {
-            "description": "This fetch's id: pass it as `fetch_id` in feedback records citing this page.",
+            "description": "This fetch's id (its web_query_id): pass it in `following_up_on` and in feedback records' sources citing this page (`web_query_id`).",
             "title": "Id",
             "type": "string"
           },
@@ -594,7 +594,7 @@
             "type": "integer"
           },
           "following_up_on": {
-            "description": "Ids of your searches (the `id` of their responses, last 7 days) whose results led you to this page. `[]` for a URL that didn't come from your searches.",
+            "description": "Ids (web_query_ids) of your searches and fetches (the `id` of their responses, last 7 days) that led you to this page: the search that returned it, or the page that linked to it. `[]` for a URL that didn't come from your searches or pages.",
             "items": {
               "anyOf": [
                 {
@@ -694,13 +694,9 @@
             "type": "object",
             "description": "The source you went with, what it says, and why.",
             "properties": {
-              "search_query_id": {
+              "web_query_id": {
                 "type": "string",
-                "description": "The search_query_id of the search that returned it, exactly as shown in that search's header (e.g. \"482913\"), for a source you saw in search results. \"\" for a page you read with web_fetch: give its fetch_id instead."
-              },
-              "fetch_id": {
-                "type": "string",
-                "description": "The fetch_id of the web_fetch call you read it with, exactly as shown at the top of the page (e.g. \"571204\"), for a page you read with web_fetch. \"\" for a search result you didn't open with web_fetch."
+                "description": "The web_query_id of the search that returned it, exactly as shown in that search's header, or of the web_fetch call you read it with, exactly as shown at the top of the page (e.g. \"482913570\")."
               },
               "url": {
                 "type": "string",
@@ -716,8 +712,7 @@
               }
             },
             "required": [
-              "search_query_id",
-              "fetch_id",
+              "web_query_id",
               "url",
               "says",
               "why"
@@ -729,13 +724,9 @@
             "items": {
               "type": "object",
               "properties": {
-                "search_query_id": {
+                "web_query_id": {
                   "type": "string",
-                  "description": "The search_query_id of the search that returned it, exactly as shown in that search's header (e.g. \"482913\"), for a source you saw in search results. \"\" for a page you read with web_fetch: give its fetch_id instead."
-                },
-                "fetch_id": {
-                  "type": "string",
-                  "description": "The fetch_id of the web_fetch call you read it with, exactly as shown at the top of the page (e.g. \"571204\"), for a page you read with web_fetch. \"\" for a search result you didn't open with web_fetch."
+                  "description": "The web_query_id of the search that returned it, exactly as shown in that search's header, or of the web_fetch call you read it with, exactly as shown at the top of the page (e.g. \"482913570\")."
                 },
                 "url": {
                   "type": "string",
@@ -747,8 +738,7 @@
                 }
               },
               "required": [
-                "search_query_id",
-                "fetch_id",
+                "web_query_id",
                 "url",
                 "says"
               ]
@@ -760,13 +750,9 @@
             "items": {
               "type": "object",
               "properties": {
-                "search_query_id": {
+                "web_query_id": {
                   "type": "string",
-                  "description": "The search_query_id of the search that returned it, exactly as shown in that search's header (e.g. \"482913\"), for a source you saw in search results. \"\" for a page you read with web_fetch: give its fetch_id instead."
-                },
-                "fetch_id": {
-                  "type": "string",
-                  "description": "The fetch_id of the web_fetch call you read it with, exactly as shown at the top of the page (e.g. \"571204\"), for a page you read with web_fetch. \"\" for a search result you didn't open with web_fetch."
+                  "description": "The web_query_id of the search that returned it, exactly as shown in that search's header, or of the web_fetch call you read it with, exactly as shown at the top of the page (e.g. \"482913570\")."
                 },
                 "url": {
                   "type": "string",
@@ -792,8 +778,7 @@
                 }
               },
               "required": [
-                "search_query_id",
-                "fetch_id",
+                "web_query_id",
                 "url",
                 "says",
                 "reason",

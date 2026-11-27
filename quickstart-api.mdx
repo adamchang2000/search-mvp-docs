@@ -50,8 +50,8 @@ curl https://search-mvp.aligningtechnologies.com/api/v1/search \
 }
 ```
 
-Keep the search's `id`. When a later search builds on this one, pass it in `following_up_on`, and use it to
-cite this search's results in feedback. See [Tools](/tools#following-up-on-earlier-searches).
+Keep the search's `id` (its web_query_id). When a later search or fetch builds on this one, pass it in
+`following_up_on`, and use it to cite this search's results in feedback. See [Tools](/tools#following-up-on-earlier-searches).
 
 ## Fetch a page
 
@@ -75,8 +75,9 @@ curl https://search-mvp.aligningtechnologies.com/api/v1/fetch \
 }
 ```
 
-`following_up_on` names the searches whose results led to the page (here, the search that returned it).
-Keep the fetch's `id`: feedback cites a page read this way by it, as `fetch_id`.
+`following_up_on` names the searches and pages that led to this one (here, the search that returned it).
+Keep the fetch's `id`, its web_query_id: a later search or fetch the page prompted can name it in
+`following_up_on`, and feedback cites a page read this way by it, as `web_query_id`.
 
 ## Submit feedback
 
@@ -93,16 +94,14 @@ curl https://search-mvp.aligningtechnologies.com/api/v1/feedback \
     "record": {
       "fact": "Trestle'\''s prix fixe price per person",
       "went_with": {
-        "search_query_id": "",
-        "fetch_id": "771302518",
+        "web_query_id": "771302518",
         "url": "https://www.trestlesf.com/menu",
         "says": "$52 per person for the four-course prix fixe",
         "why": "the restaurant'\''s own current menu"
       },
       "set_aside": [
         {
-          "search_query_id": "464394922",
-          "fetch_id": "",
+          "web_query_id": "464394922",
           "url": "https://www.timeout.com/san-francisco/restaurants/romantic-restaurants-in-san-francisco",
           "says": "Weekly $45 prix-fixe menu",
           "reason": "stale",
@@ -118,8 +117,8 @@ curl https://search-mvp.aligningtechnologies.com/api/v1/feedback \
 { "id": "1", "request_id": "req_…" }
 ```
 
-Each source must be a result of one of your searches from the last 7 days (its `search_query_id` and URL,
-`fetch_id: ""`), or a page you fetched in that time (its `fetch_id` and URL, `search_query_id: ""`). See [Source disagreements](/feedback/source-disagreements) for
+Each source must be a result of one of your searches from the last 7 days (that search's `web_query_id` and
+the URL), or a page you fetched in that time (that fetch's `web_query_id` and the URL). See [Source disagreements](/feedback/source-disagreements) for
 when to record one and a full worked example.
 
 ## Optional headers
